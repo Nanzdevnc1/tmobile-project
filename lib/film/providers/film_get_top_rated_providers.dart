@@ -3,34 +3,37 @@ import 'package:final_project/film/repository/film_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class FilmGetDiscoverProviders with ChangeNotifier {
+class FilmGetPopularProviders with ChangeNotifier {
   final FilmRepository _filmRepository;
 
-  FilmGetDiscoverProviders(this._filmRepository);
+  FilmGetPopularProviders(this._filmRepository);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  final List<ModelFilm> _film = [];
-  List<ModelFilm> get film => _film;
+  final List<ModelFilm> _films = [];
+  List<ModelFilm> get movies => _films;
 
-  void getDiscover(BuildContext context) async {
+  void getTopRated(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    final result = await _filmRepository.getDiscover();
+    final result = await _filmRepository.getTopRated();
+
     result.fold(
       (pesanError) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(pesanError)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(pesanError),
+        ));
 
         _isLoading = false;
         notifyListeners();
+
         return;
       },
       (response) {
-        _film.clear();
-        _film.addAll(response.results);
+        _films.clear();
+        _films.addAll(response.results);
 
         _isLoading = false;
         notifyListeners();
@@ -39,16 +42,18 @@ class FilmGetDiscoverProviders with ChangeNotifier {
     );
   }
 
-  void getDiscoverWithPaging(
+  void getTopRatedWithPagination(
     BuildContext context, {
-    required PagingController pagingController,
     required int page,
+    required PagingController pagingController,
   }) async {
-    final result = await _filmRepository.getDiscover(page: page);
+    final result = await _filmRepository.getTopRated();
+
     result.fold(
       (pesanError) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(pesanError)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(pesanError),
+        ));
 
         pagingController.error = pesanError;
 

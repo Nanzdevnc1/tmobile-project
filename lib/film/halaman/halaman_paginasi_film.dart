@@ -1,4 +1,5 @@
 import 'package:final_project/film/halaman/halaman_utama.dart';
+import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
 import 'package:final_project/widget/item_movie_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/film/models/model_film.dart';
@@ -6,8 +7,12 @@ import 'package:final_project/film/providers/film_get_discover_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+enum TipeFilm { discover, top_rated }
+
 class HalamanPaginasiFilm extends StatefulWidget {
-  const HalamanPaginasiFilm({super.key});
+  const HalamanPaginasiFilm({super.key, required this.type});
+
+  final TipeFilm type;
 
   @override
   State<HalamanPaginasiFilm> createState() => _HalamanPaginasiFilmState();
@@ -15,28 +20,48 @@ class HalamanPaginasiFilm extends StatefulWidget {
 
 class _HalamanPaginasiFilmState extends State<HalamanPaginasiFilm> {
   final PagingController<int, ModelFilm> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 2);
 
   @override
   void initState() {
-    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      final provider = context.read<FilmGetDiscoverProviders>();
-      if (provider != null) {
-        provider.getDiscoverWithPaging(
-          context,
-          pagingController: _pagingController,
-          page: pageKey,
-        );
+      switch (widget.type) {
+        case TipeFilm.discover:
+          context.read<FilmGetDiscoverProviders>().getDiscoverWithPaging(
+                context,
+                pagingController: _pagingController,
+                page: pageKey,
+              );
+          break;
+        case TipeFilm.top_rated:
+          context.read<FilmGetPopularProviders>().getTopRatedWithPagination(
+                context,
+                pagingController: _pagingController,
+                page: pageKey,
+              );
+          break;
+        default:
       }
     });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discover Film'),
+        title: Builder(
+          builder: (_) {
+            switch (widget.type) {
+              case TipeFilm.discover:
+                return const Text('Discover Film');
+              case TipeFilm.top_rated:
+                return const Text('Top Film');
+            }
+            
+          }
+        ),
       ),
       body: PagedListView.separated(
         padding: const EdgeInsets.all(16.0),

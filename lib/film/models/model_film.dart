@@ -35,11 +35,8 @@ class ModelFilmResponse {
 class ModelFilm {
     String backdropPath;
     int id;
-    String originalTitle;
     String overview;
-    double popularity;
     String posterPath;
-    DateTime releaseDate;
     String title;
     double voteAverage;
     int voteCount;
@@ -47,11 +44,8 @@ class ModelFilm {
     ModelFilm({
         required this.backdropPath,
         required this.id,
-        required this.originalTitle,
         required this.overview,
-        required this.popularity,
         required this.posterPath,
-        required this.releaseDate,
         required this.title,
         required this.voteAverage,
         required this.voteCount,
@@ -60,11 +54,8 @@ class ModelFilm {
     factory ModelFilm.fromJson(Map<String, dynamic> json) => ModelFilm(
         backdropPath: json["backdrop_path"] ?? '', // Pastikan tidak null
         id: json["id"] ?? 0,
-        originalTitle: json["original_title"] ?? 'No Title',
         overview: json["overview"] ?? 'No Overview',
-        popularity: json["popularity"]?.toDouble() ?? 0.0,
         posterPath: json["poster_path"] ?? '',
-        releaseDate: json["release_date"] != null ? DateTime.parse(json["release_date"]) : DateTime(2000),
         title: json["title"] ?? 'No Title',
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,
@@ -73,11 +64,8 @@ class ModelFilm {
     Map<String, dynamic> toJson() => {
         "backdrop_path": backdropPath,
         "id": id,
-        "original_title": originalTitle,
         "overview": overview,
-        "popularity": popularity,
         "poster_path": posterPath,
-        "release_date": "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
         "title": title,
         "vote_average": voteAverage,
         "vote_count": voteCount,

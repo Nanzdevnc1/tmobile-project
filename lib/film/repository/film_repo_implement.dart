@@ -22,7 +22,6 @@ class FilmRepositoryImplement implements FilmRepository {
       }
 
       return const Left('Error');
-
     } on DioError catch (e) {
       if (e.response != null) {
         return Left(e.response.toString());
@@ -32,5 +31,28 @@ class FilmRepositoryImplement implements FilmRepository {
     }
 
     // throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<String, ModelFilmResponse>> getTopRated({int page = 1}) async {
+    try {
+      final result = await _dio.get(
+        '/movie/top_rated',
+        queryParameters: {'page': page},
+      );
+
+      if (result.statusCode == 200 && result.data != null) {
+        final model = ModelFilmResponse.fromJson(result.data);
+        return Right(model);
+      }
+
+      return const Left('Error memanggil top film ');
+    } on DioError catch (e) {
+      if (e.response != null) {
+        return Left(e.response.toString());
+      }
+
+      return const Left('Error lainnya');
+    }
   }
 }
