@@ -18,10 +18,10 @@ class ModelFilmResponse {
     });
 
     factory ModelFilmResponse.fromJson(Map<String, dynamic> json) => ModelFilmResponse(
-        page: json["page"],
-        results: List<ModelFilm>.from(json["results"].map((x) => ModelFilm.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
+        page: json["page"] ?? 0,
+        results: List<ModelFilm>.from(json["results"].map((x) => ModelFilm.fromJson(x ?? {}))),
+        totalPages: json["total_pages"] ?? 0,
+        totalResults: json["total_results"] ?? 0,
     );
 
     Map<String, dynamic> toJson() => {
@@ -58,16 +58,16 @@ class ModelFilm {
     });
 
     factory ModelFilm.fromJson(Map<String, dynamic> json) => ModelFilm(
-        backdropPath: json["backdrop_path"],
-        id: json["id"],
-        originalTitle: json["original_title"],
-        overview: json["overview"],
-        popularity: json["popularity"]?.toDouble(),
-        posterPath: json["poster_path"],
-        releaseDate: DateTime.parse(json["release_date"]),
-        title: json["title"],
-        voteAverage: json["vote_average"]?.toDouble(),
-        voteCount: json["vote_count"],
+        backdropPath: json["backdrop_path"] ?? '', // Pastikan tidak null
+        id: json["id"] ?? 0,
+        originalTitle: json["original_title"] ?? 'No Title',
+        overview: json["overview"] ?? 'No Overview',
+        popularity: json["popularity"]?.toDouble() ?? 0.0,
+        posterPath: json["poster_path"] ?? '',
+        releaseDate: json["release_date"] != null ? DateTime.parse(json["release_date"]) : DateTime(2000),
+        title: json["title"] ?? 'No Title',
+        voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
+        voteCount: json["vote_count"] ?? 0,
     );
 
     Map<String, dynamic> toJson() => {
@@ -105,7 +105,7 @@ class EnumValues<T> {
     EnumValues(this.map);
 
     Map<T, String> get reverse {
-            reverseMap = map.map((k, v) => MapEntry(v, k));
-            return reverseMap;
+        reverseMap = map.map((k, v) => MapEntry(v, k));
+        return reverseMap;
     }
 }

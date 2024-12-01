@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:final_project/constant.dart';
+import 'package:final_project/film/halaman/halaman_paginasi_film.dart';
 import 'package:final_project/film/models/model_film.dart';
 import 'package:final_project/film/providers/film_get_discover_providers.dart';
 import 'package:final_project/widget/image_widget.dart';
+import 'package:final_project/widget/item_movie_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,11 +21,12 @@ class HalamanFilm extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset('assets/images/icon.png'),
-                    )),
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset('assets/images/icon.png'),
+                  ),
+                ),
                 Text('Filmio'),
               ],
             ),
@@ -32,7 +35,6 @@ class HalamanFilm extends StatelessWidget {
             foregroundColor: Colors.black,
           ),
           SliverToBoxAdapter(
-            // Tambahkan ini
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -40,11 +42,17 @@ class HalamanFilm extends StatelessWidget {
                 children: [
                   Text(
                     'Discover Film',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const HalamanPaginasiFilm(),
+                        ),
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.black,
                       shape: const StadiumBorder(),
@@ -75,34 +83,46 @@ class WidgetDiscoverFilm extends StatefulWidget {
 class _WidgetDiscoverFilmState extends State<WidgetDiscoverFilm> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<FilmGetDiscoverProviders>().getDiscover(context);
-    });
     super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final provider = context.read<FilmGetDiscoverProviders>();
+      if (provider != null) {
+        provider.getDiscover(context);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Consumer<FilmGetDiscoverProviders>(
-        builder: (_, provider, __) {
-          if (provider.isLoading) {
-            return Container(
+    return Consumer<FilmGetDiscoverProviders>(
+      builder: (_, provider, __) {
+        if (provider.isLoading) {
+          return SliverToBoxAdapter(
+            child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16.0),
               height: 300.0,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.black26,
-                  borderRadius: BorderRadius.circular(12)),
-            );
-          }
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+        }
 
-          if (provider.film.isNotEmpty) {
-            return CarouselSlider.builder(
+        if (provider.film.isNotEmpty) {
+          return SliverToBoxAdapter(
+            child: CarouselSlider.builder(
               itemCount: provider.film.length,
               itemBuilder: (_, index, __) {
                 final film = provider.film[index];
-                return ItemFilm(film);
+                return ItemFilmWidget(
+                  film: film,
+                  heightBackdrop: 300.0,
+                  widthBackdrop: double.infinity,
+                  heightPoster: 160,
+                  widthPoster: 100,
+                );
               },
               options: CarouselOptions(
                 height: 300.0,
@@ -113,103 +133,28 @@ class _WidgetDiscoverFilmState extends State<WidgetDiscoverFilm> {
                 enlargeCenterPage: true,
                 scrollDirection: Axis.horizontal,
               ),
-            );
-          }
-          return Container(
+            ),
+          );
+        }
+
+        return SliverToBoxAdapter(
+          child: Container(
             margin: EdgeInsets.symmetric(horizontal: 16.0),
             height: 300.0,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.black26, borderRadius: BorderRadius.circular(12)),
+              color: Colors.black26,
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Center(
               child: Text(
                 'Tidak ditemukan',
                 style: TextStyle(color: Colors.black45),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
-}
-
-class ItemFilm extends Container {
-  final ModelFilm film;
-
-  ItemFilm(this.film);
-
-  @override
-  // TODO: implement clipBehavior
-  Clip get clipBehavior => Clip.hardEdge;
-
-  @override
-  Decoration? get decoration => BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-      );
-
-  @override
-  Widget? get child => Stack(
-        children: [
-          ImageNetworkWidget(
-            imageSrc: '${film.backdropPath}',
-            height: 300.0,
-            width: double.infinity,
-          ),
-          Container(
-            height: 300.0,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black87,
-                  ]),
-            ),
-          ),
-          Positioned(
-            bottom: 16.0,
-            left: 16.0,
-            right: 16.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ImageNetworkWidget(
-                  imageSrc: '${film.posterPath}',
-                  height: 160.0,
-                  width: 100,
-                  radius: 14,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  film.title,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.star_rounded,
-                      color: Colors.amber,
-                    ),
-                    Text(
-                      '${film.voteAverage} (${film.voteCount})',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
-      );
 }
