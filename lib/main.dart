@@ -6,6 +6,7 @@ import 'package:final_project/film/providers/film_get_now_playing_providers.dart
 import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
 import 'package:final_project/film/repository/film_repo.dart';
 import 'package:final_project/film/repository/film_repo_implement.dart';
+import 'package:final_project/injector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
@@ -14,35 +15,27 @@ void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  final dioOptions = BaseOptions(
-    baseUrl: Constant.base_url,
-    queryParameters: {'api_key': Constant.api_key},
-  );
+  setup();
 
-  final Dio dio = Dio(dioOptions);
-  final FilmRepository filmRepository = FilmRepositoryImplement(dio);
-
-  runApp( MyApp(filmRepository: filmRepository));
+  runApp(const MyApp());
   FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.filmRepository});
-
-  final FilmRepository filmRepository;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (_) => FilmGetDiscoverProviders(filmRepository),
+            create: (_) => serviceLocator<FilmGetDiscoverProviders>(),
           ),
           ChangeNotifierProvider(
-            create: (_) => FilmGetTopRatedProviders(filmRepository),
+            create: (_) => serviceLocator<FilmGetTopRatedProviders>(),
           ),
           ChangeNotifierProvider(
-            create: (_) => FilmGetNowPlayingProviders(filmRepository),
+            create: (_) => serviceLocator<FilmGetNowPlayingProviders>(),
           ),
         ],
         child: MaterialApp(
