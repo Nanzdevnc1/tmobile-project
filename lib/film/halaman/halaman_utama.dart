@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:final_project/constant.dart';
 import 'package:final_project/film/components/film_discover_component.dart';
+import 'package:final_project/film/components/film_now_playing_component.dart';
 import 'package:final_project/film/components/film_top_rated_component.dart';
 import 'package:final_project/film/halaman/halaman_paginasi_film.dart';
 import 'package:final_project/film/models/model_film.dart';
@@ -60,7 +61,19 @@ class HalamanFilm extends StatelessWidget {
               );
             },
           ),
-          FilmPopularComponent(),   
+          FilmTopRatedComponent(),   
+          _WidgetTitle(
+            title: 'Now Playing Film',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const HalamanPaginasiFilm(type: TipeFilm.nowPlaying,),
+                ),
+              );
+            },
+          ),
+          FilmNowPlayingComponent(),
         ],
       ),
     );

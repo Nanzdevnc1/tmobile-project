@@ -1,40 +1,37 @@
+import 'package:dio/dio.dart';
 import 'package:final_project/film/models/model_film.dart';
 import 'package:final_project/film/repository/film_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class FilmGetTopRatedProviders with ChangeNotifier {
+class FilmGetNowPlayingProviders with ChangeNotifier {
   final FilmRepository _filmRepository;
 
-  FilmGetTopRatedProviders(this._filmRepository);
+  FilmGetNowPlayingProviders(this._filmRepository);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  final List<ModelFilm> _films = [];
-  List<ModelFilm> get movies => _films;
+  final List<ModelFilm> movies = [];
+  List<ModelFilm> get films => movies;
 
-  void getTopRated(BuildContext context) async {
+  void getNowPlaying(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    final result = await _filmRepository.getTopRated();
-
+    final result = await _filmRepository.getNowPlaying();
     result.fold(
       (pesanError) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(pesanError),
         ));
-
         _isLoading = false;
         notifyListeners();
-
         return;
       },
       (response) {
-        _films.clear();
-        _films.addAll(response.results);
-
+        movies.clear();
+        movies.addAll(response.results);
         _isLoading = false;
         notifyListeners();
         return;
@@ -42,21 +39,17 @@ class FilmGetTopRatedProviders with ChangeNotifier {
     );
   }
 
-  void getTopRatedWithPagination(
+  void getNowPlayingWithPaging(
     BuildContext context, {
-    required int page,
     required PagingController pagingController,
+    required int page,
   }) async {
-    final result = await _filmRepository.getTopRated(page: page);
-
+    final result = await _filmRepository.getNowPlaying(page : page);
     result.fold(
       (pesanError) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(pesanError),
         ));
-
-        pagingController.error = pesanError;
-
         return;
       },
       (response) {

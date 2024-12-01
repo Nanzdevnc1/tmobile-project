@@ -55,4 +55,28 @@ class FilmRepositoryImplement implements FilmRepository {
       return const Left('Error lainnya');
     }
   }
+
+  @override
+  Future<Either<String, ModelFilmResponse>> getNowPlaying(
+      {int page = 1}) async {
+    try {
+      final result = await _dio.get(
+        '/movie/now_playing',
+        queryParameters: {'page': page},
+      );
+
+      if (result.statusCode == 200 && result.data != null) {
+        final model = ModelFilmResponse.fromJson(result.data);
+        return Right(model);
+      }
+
+      return const Left('Error memanggil now playing film ');
+    } on DioError catch (e) {
+      if (e.response != null) {
+        return Left(e.response.toString());
+      }
+
+      return const Left('Error lainnya');
+    }
+  }
 }

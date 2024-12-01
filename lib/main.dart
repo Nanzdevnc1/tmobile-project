@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:final_project/constant.dart';
 import 'package:final_project/film/halaman/halaman_utama.dart';
 import 'package:final_project/film/providers/film_get_discover_providers.dart';
+import 'package:final_project/film/providers/film_get_now_playing_providers.dart';
 import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
 import 'package:final_project/film/repository/film_repo.dart';
 import 'package:final_project/film/repository/film_repo_implement.dart';
@@ -38,7 +39,10 @@ class MyApp extends StatelessWidget {
             create: (_) => FilmGetDiscoverProviders(filmRepository),
           ),
           ChangeNotifierProvider(
-            create: (_) => FilmGetPopularProviders(filmRepository),
+            create: (_) => FilmGetTopRatedProviders(filmRepository),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => FilmGetNowPlayingProviders(filmRepository),
           ),
         ],
         child: MaterialApp(

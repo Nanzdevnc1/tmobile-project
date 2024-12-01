@@ -3,18 +3,18 @@ import 'package:final_project/widget/image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FilmPopularComponent extends StatefulWidget {
-  const FilmPopularComponent({super.key});
+class FilmTopRatedComponent extends StatefulWidget {
+  const FilmTopRatedComponent({super.key});
 
   @override
-  State<FilmPopularComponent> createState() => _FilmPopularComponentState();
+  State<FilmTopRatedComponent> createState() => _FilmTopRatedComponentState();
 }
 
-class _FilmPopularComponentState extends State<FilmPopularComponent> {
+class _FilmTopRatedComponentState extends State<FilmTopRatedComponent> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      final provider = context.read<FilmGetPopularProviders>();
+      final provider = context.read<FilmGetTopRatedProviders>();
       if (provider != null) {
         provider.getTopRated(context);
       }
@@ -27,7 +27,7 @@ class _FilmPopularComponentState extends State<FilmPopularComponent> {
     return SliverToBoxAdapter(
       child: SizedBox(
         height: 200,
-        child: Consumer<FilmGetPopularProviders>(
+        child: Consumer<FilmGetTopRatedProviders>(
           builder: (_, provider, __) {
             if (provider.isLoading) {
               return Container(

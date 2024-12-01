@@ -1,4 +1,5 @@
 import 'package:final_project/film/halaman/halaman_utama.dart';
+import 'package:final_project/film/providers/film_get_now_playing_providers.dart';
 import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
 import 'package:final_project/widget/item_movie_widget.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,7 @@ import 'package:final_project/film/providers/film_get_discover_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-enum TipeFilm { discover, top_rated }
+enum TipeFilm { discover, top_rated, nowPlaying }
 
 class HalamanPaginasiFilm extends StatefulWidget {
   const HalamanPaginasiFilm({super.key, required this.type});
@@ -20,7 +21,7 @@ class HalamanPaginasiFilm extends StatefulWidget {
 
 class _HalamanPaginasiFilmState extends State<HalamanPaginasiFilm> {
   final PagingController<int, ModelFilm> _pagingController =
-      PagingController(firstPageKey: 2);
+      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
@@ -34,13 +35,19 @@ class _HalamanPaginasiFilmState extends State<HalamanPaginasiFilm> {
               );
           break;
         case TipeFilm.top_rated:
-          context.read<FilmGetPopularProviders>().getTopRatedWithPagination(
+          context.read<FilmGetTopRatedProviders>().getTopRatedWithPagination(
                 context,
                 pagingController: _pagingController,
                 page: pageKey,
               );
           break;
-        default:
+        case TipeFilm.nowPlaying:
+          context.read<FilmGetNowPlayingProviders>().getNowPlayingWithPaging(
+                context,
+                pagingController: _pagingController,
+                page: pageKey,
+              );
+          break;
       }
     });
 
@@ -58,6 +65,8 @@ class _HalamanPaginasiFilmState extends State<HalamanPaginasiFilm> {
                 return const Text('Discover Film');
               case TipeFilm.top_rated:
                 return const Text('Top Film');
+              case TipeFilm.nowPlaying:
+                return const Text('Now Playing Film');
             }
             
           }
