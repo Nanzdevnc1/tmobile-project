@@ -1,22 +1,26 @@
+import 'package:final_project/film/models/model_detail_film.dart';
 import 'package:final_project/film/models/model_film.dart';
 import 'package:final_project/widget/image_widget.dart';
 import 'package:flutter/material.dart';
 
 class ItemFilmWidget extends Container {
-  final ModelFilm film;
-
+  final ModelFilm? film;
+  final ModelDetailFilm? detailFilm;
   final double heightBackdrop;
   final double widthBackdrop;
   final double heightPoster;
   final double widthPoster;
+  final double radius;
   final void Function()? onTap;
 
   ItemFilmWidget({
-    required this.film,
     required this.heightBackdrop,
     required this.widthBackdrop,
     required this.heightPoster,
     required this.widthPoster,
+    this.radius = 12,
+    this.film,
+    this.detailFilm,
     this.onTap,
   });
 
@@ -25,14 +29,15 @@ class ItemFilmWidget extends Container {
 
   @override
   Decoration? get decoration => BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(radius),
       );
 
   @override
   Widget? get child => Stack(
         children: [
           ImageNetworkWidget(
-            imageSrc: '${film.backdropPath}',
+            imageSrc:
+                '${detailFilm != null ? detailFilm!.backdropPath : film!.backdropPath}',
             height: heightBackdrop,
             width: widthBackdrop,
           ),
@@ -57,14 +62,15 @@ class ItemFilmWidget extends Container {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ImageNetworkWidget(
-                  imageSrc: '${film.posterPath}',
+                  imageSrc:
+                      '${detailFilm != null ? detailFilm!.posterPath : film!.backdropPath}',
                   height: heightPoster,
                   width: widthPoster,
                   radius: 14,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  film.title,
+                  '${detailFilm != null ? detailFilm!.title : film!.title}',
                   style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.white,
@@ -79,7 +85,7 @@ class ItemFilmWidget extends Container {
                       color: Colors.amber,
                     ),
                     Text(
-                      '${film.voteAverage} (${film.voteCount})',
+                      '${detailFilm != null ? detailFilm!.voteAverage : film!.voteAverage} (${detailFilm != null ? detailFilm!.voteCount : film!.voteCount})',
                       style: const TextStyle(
                         fontSize: 16.0,
                         color: Colors.white,
@@ -90,7 +96,8 @@ class ItemFilmWidget extends Container {
               ],
             ),
           ),
-          Positioned.fill(child: Material(
+          Positioned.fill(
+              child: Material(
             color: Colors.transparent,
             child: InkWell(
               onTap: onTap,
