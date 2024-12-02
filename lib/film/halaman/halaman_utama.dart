@@ -1,17 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:final_project/constant.dart';
-import 'package:final_project/film/components/film_discover_component.dart';
-import 'package:final_project/film/components/film_now_playing_component.dart';
-import 'package:final_project/film/components/film_top_rated_component.dart';
-import 'package:final_project/film/halaman/halaman_paginasi_film.dart';
-import 'package:final_project/film/halaman/halaman_search_film.dart';
-import 'package:final_project/film/models/model_film.dart';
-import 'package:final_project/film/providers/film_get_discover_providers.dart';
-import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
-import 'package:final_project/widget/image_widget.dart';
-import 'package:final_project/widget/item_movie_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:final_project/film/halaman/halaman_paginasi_film.dart';
+import 'package:final_project/film/halaman/halaman_search_film.dart';
+import 'package:final_project/film/components/film_discover_component.dart';
+import 'package:final_project/film/components/film_top_rated_component.dart';
+import 'package:final_project/film/components/film_now_playing_component.dart';
 
 class HalamanFilm extends StatelessWidget {
   const HalamanFilm({super.key});
@@ -19,85 +12,99 @@ class HalamanFilm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Image.asset('assets/images/icon.png'),
-                ),
-              ),
-              Text('Filmio'),
-            ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.amber, Colors.black, Colors.white],
           ),
-          actions: [
-            IconButton(
-                onPressed: () => showSearch(
+        ),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start, // Posisi ke kiri
+                children: [
+                  CircleAvatar(
+                    radius: 20, // Ukuran lingkaran
+                    backgroundColor: Colors.transparent, // Background transparan
+                    backgroundImage: AssetImage('assets/images/icon.png'),
+                  ),
+                  const SizedBox(width: 10), // Jarak antara ikon dan teks
+                  const Text(
+                    'Filmio',
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                ],
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => showSearch(
                     context: context,
                     delegate: HalamanSearchFilm(),
                   ),
-                icon: Icon(
-                  Icons.search,
-                ))
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+              floating: true,
+              snap: true,
+              centerTitle: false, // Nonaktifkan posisi tengah
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+            ),
+            _WidgetTitle(
+              title: 'Discover Film',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const HalamanPaginasiFilm(type: TipeFilm.discover),
+                  ),
+                );
+              },
+            ),
+            SliverToBoxAdapter(
+              child: FilmDiscoverComponent(),
+            ),
+            _WidgetTitle(
+              title: 'Popular Film',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const HalamanPaginasiFilm(type: TipeFilm.top_rated),
+                  ),
+                );
+              },
+            ),
+            SliverToBoxAdapter(
+              child: FilmTopRatedComponent(),
+            ),
+            _WidgetTitle(
+              title: 'Now Playing Film',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const HalamanPaginasiFilm(type: TipeFilm.nowPlaying),
+                  ),
+                );
+              },
+            ),
+            SliverToBoxAdapter(
+              child: FilmNowPlayingComponent(),
+            ),
           ],
-          floating: true,
-          snap: true,
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
         ),
-        _WidgetTitle(
-          title: 'Discover Film',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) =>
-                    const HalamanPaginasiFilm(type: TipeFilm.discover),
-              ),
-            );
-          },
-        ),
-        SliverToBoxAdapter(
-          child: FilmDiscoverComponent(),
-        ),
-        _WidgetTitle(
-          title: 'Popular Film',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) =>
-                    const HalamanPaginasiFilm(type: TipeFilm.top_rated),
-              ),
-            );
-          },
-        ),
-        SliverToBoxAdapter(
-          child: FilmTopRatedComponent(),
-        ),
-        _WidgetTitle(
-          title: 'Now Playing Film',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) =>
-                    const HalamanPaginasiFilm(type: TipeFilm.nowPlaying),
-              ),
-            );
-          },
-        ),
-        SliverToBoxAdapter(
-          child: FilmNowPlayingComponent(),
-        ),
-      ],
-    ));
+      ),
+    );
   }
 }
 
@@ -115,19 +122,22 @@ class _WidgetTitle extends SliverToBoxAdapter {
           children: [
             Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  color: Colors.white),
             ),
             OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.black,
+                foregroundColor: Colors.white,
                 shape: const StadiumBorder(),
                 side: const BorderSide(
-                  color: Colors.black54,
+                  color: Colors.white,
                 ),
               ),
-              child: Text('Lihat yang lain'),
-            )
+              child: const Text('See More'),
+            ),
           ],
         ),
       );

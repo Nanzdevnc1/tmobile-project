@@ -10,7 +10,7 @@ class FilmRepositoryImplement implements FilmRepository {
   FilmRepositoryImplement(this._dio);
 
   @override
-  Future<Either<String, ModelFilmResponse>> getDiscover({int page = 1}) async {
+  Future<Either<String, ModelFilmResponse>> getDiscover({int page = 5}) async {
     try {
       final result = await _dio.get(
         '/discover/movie',
