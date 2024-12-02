@@ -6,5 +6,6 @@ abstract class FilmRepository {
   Future<Either<String, ModelFilmResponse>> getDiscover ({int page = 1});
   Future<Either<String, ModelFilmResponse>> getTopRated ({int page = 1});
   Future<Either<String, ModelFilmResponse>> getNowPlaying ({int page = 1});
+  Future<Either<String, ModelFilmResponse>> search ({required String query});
   Future<Either<String, ModelDetailFilm>> getDetailFilm ({required int id});
 }

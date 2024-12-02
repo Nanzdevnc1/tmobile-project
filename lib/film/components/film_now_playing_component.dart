@@ -1,5 +1,5 @@
+import 'package:final_project/film/halaman/halaman_detail_film.dart';
 import 'package:final_project/film/providers/film_get_now_playing_providers.dart';
-import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
 import 'package:final_project/widget/image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,71 +44,93 @@ class _FilmNowPlayingComponentState extends State<FilmNowPlayingComponent> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) {
                 final film = provider.movies[index];
-                return Container(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black45,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ImageNetworkWidget(
-                        imageSrc: film.posterPath,
-                        height: 200,
-                        width: 120,
-                        radius: 12.0,
+                return Stack(
+                  children: [
+                    Container(
+                      height: 200,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black45,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      const SizedBox(width: 8.0),
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              film.title,
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Row(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ImageNetworkWidget(
+                            imageSrc: film.posterPath,
+                            height: 200,
+                            width: 120,
+                            radius: 12.0,
+                          ),
+                          const SizedBox(width: 8.0),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.amber,
-                                ),
                                 Text(
-                                  '${film.voteAverage} (${film.voteCount})',
+                                  film.title,
                                   style: const TextStyle(
                                     fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.star_rounded,
+                                      color: Colors.amber,
+                                    ),
+                                    Text(
+                                      '${film.voteAverage} (${film.voteCount})',
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  film.overview,
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ],
                             ),
-                            Text(
-                              film.overview,
-                              maxLines: 4,
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.italic,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return HalamanDetailFilm(id: film.id);
+                                },
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
               separatorBuilder: (_, __) => const SizedBox(width: 8),

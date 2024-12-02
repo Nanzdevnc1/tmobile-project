@@ -4,6 +4,7 @@ import 'package:final_project/film/providers/film_get_detail_provider.dart';
 import 'package:final_project/film/providers/film_get_discover_providers.dart';
 import 'package:final_project/film/providers/film_get_now_playing_providers.dart';
 import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
+import 'package:final_project/film/providers/film_search_provider.dart';
 import 'package:final_project/film/repository/film_repo.dart';
 import 'package:final_project/film/repository/film_repo_implement.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +23,9 @@ void setup() {
   );
   serviceLocator.registerFactory<FilmGetDetailProvider>(
     () => FilmGetDetailProvider(serviceLocator()),
+  );
+  serviceLocator.registerFactory<FilmSearchProvider>(
+    () => FilmSearchProvider(serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton<FilmRepository>(

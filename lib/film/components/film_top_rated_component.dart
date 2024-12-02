@@ -1,3 +1,4 @@
+import 'package:final_project/film/halaman/halaman_detail_film.dart';
 import 'package:final_project/film/providers/film_get_top_rated_providers.dart';
 import 'package:final_project/widget/image_widget.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +42,33 @@ class _FilmTopRatedComponentState extends State<FilmTopRatedComponent> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) {
-                return ImageNetworkWidget(
-                  imageSrc: provider.movies[index].posterPath,
-                  height: 200,
-                  width: 120,
-                  radius: 12.0,
+                final film = provider.movies[index]; // Mendapatkan film
+                return Stack(
+                  children: [
+                    ImageNetworkWidget(
+                      imageSrc: film.posterPath,
+                      height: 200,
+                      width: 120,
+                      radius: 12.0,
+                    ),
+                    Positioned.fill(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return HalamanDetailFilm(id: film.id);
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               },
               separatorBuilder: (_, __) => const SizedBox(width: 8),

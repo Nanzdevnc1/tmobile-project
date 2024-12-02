@@ -1,5 +1,6 @@
 import 'package:final_project/film/providers/film_get_detail_provider.dart';
 import 'package:final_project/injector.dart';
+import 'package:final_project/widget/halaman_webview.dart';
 import 'package:final_project/widget/item_movie_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,16 +51,33 @@ class _WidgetAppBar extends SliverAppBar {
 
   @override
   List<Widget>? get actions => [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.public),
-            ),
-          ),
+        Consumer<FilmGetDetailProvider>(
+          builder: (_, provider, __) {
+            final film = provider.film;
+
+            if (film != null) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => WebViewWidget(
+                                    title: film.title,
+                                    url: film.homepage,
+                                  )));
+                    },
+                    icon: const Icon(Icons.public),
+                  ),
+                ),
+              );
+            }
+            return SizedBox();
+          },
         ),
       ];
 

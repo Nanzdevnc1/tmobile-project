@@ -103,4 +103,28 @@ class FilmRepositoryImplement implements FilmRepository {
       return const Left('Error lainnya');
     }
   }
+
+  @override
+  Future<Either<String, ModelFilmResponse>> search(
+      {required String query}) async {
+    try {
+      final result = await _dio.get(
+        '/search/movie',
+        queryParameters: {"query" : query}
+      );
+
+      if (result.statusCode == 200 && result.data != null) {
+        final model = ModelFilmResponse.fromJson(result.data);
+        return Right(model);
+      }
+
+      return const Left('Error mencari film ');
+    } on DioError catch (e) {
+      if (e.response != null) {
+        return Left(e.response.toString());
+      }
+
+      return const Left('Error lainnya');
+    }
+  }
 }
