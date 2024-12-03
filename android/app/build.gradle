@@ -19,7 +19,7 @@ android {
 
 defaultConfig {
     applicationId "com.example.final_project"
-    minSdkVersion 19 // Ubah dari 19 menjadi 21
+    minSdkVersion flutter.minSdkVersion // Ubah dari 19 menjadi 21
     targetSdkVersion 
     versionCode flutter.versionCode
     versionName flutter.versionName

@@ -37,14 +37,14 @@ class _HalamanPaginasiFilmState extends State<HalamanPaginasiFilm> {
           context.read<FilmGetTopRatedProviders>().getTopRatedWithPagination(
                 context,
                 pagingController: _pagingController,
-                page: pageKey - 4,
+                page: pageKey - 1,
               );
           break;
         case TipeFilm.nowPlaying:
           context.read<FilmGetNowPlayingProviders>().getNowPlayingWithPaging(
                 context,
                 pagingController: _pagingController,
-                page: pageKey - 4,
+                page: pageKey - 2,
               );
           break;
       }
@@ -74,7 +74,7 @@ class _HalamanPaginasiFilmState extends State<HalamanPaginasiFilm> {
                   case TipeFilm.discover:
                     return const Text('Discover Film', style: TextStyle(color: Colors.white));
                   case TipeFilm.top_rated:
-                    return const Text('Top Film', style: TextStyle(color: Colors.white));
+                    return const Text('Popular Film', style: TextStyle(color: Colors.white));
                   case TipeFilm.nowPlaying:
                     return const Text('Now Playing Film', style: TextStyle(color: Colors.white));
                 }

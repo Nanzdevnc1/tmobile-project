@@ -35,7 +35,7 @@ class FilmRepositoryImplement implements FilmRepository {
   }
 
   @override
-  Future<Either<String, ModelFilmResponse>> getTopRated({int page = 1}) async {
+  Future<Either<String, ModelFilmResponse>> getTopRated({int page = 4}) async {
     try {
       final result = await _dio.get(
         '/movie/top_rated',
@@ -59,7 +59,7 @@ class FilmRepositoryImplement implements FilmRepository {
 
   @override
   Future<Either<String, ModelFilmResponse>> getNowPlaying(
-      {int page = 1}) async {
+      {int page = 3}) async {
     try {
       final result = await _dio.get(
         '/movie/now_playing',

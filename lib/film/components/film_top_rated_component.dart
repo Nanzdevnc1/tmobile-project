@@ -42,7 +42,7 @@ class _FilmTopRatedComponentState extends State<FilmTopRatedComponent> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) {
-                final film = provider.movies[index]; // Mendapatkan film
+                final film = provider.movies[index]; 
                 return Stack(
                   children: [
                     ImageNetworkWidget(
@@ -83,7 +83,7 @@ class _FilmTopRatedComponentState extends State<FilmTopRatedComponent> {
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: const Center(
-              child: Text('Film Top Rated tidak ditemukan'),
+              child: Text('Film Popular Rated tidak ditemukan'),
             ),
           );
         },

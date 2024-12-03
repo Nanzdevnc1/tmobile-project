@@ -13,7 +13,7 @@ class HalamanFilm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -23,16 +23,16 @@ class HalamanFilm extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start, // Posisi ke kiri
+              title: const Row(
+                mainAxisAlignment: MainAxisAlignment.start, 
                 children: [
                   CircleAvatar(
-                    radius: 20, // Ukuran lingkaran
-                    backgroundColor: Colors.transparent, // Background transparan
+                    radius: 20, 
+                    backgroundColor: Colors.transparent, 
                     backgroundImage: AssetImage('assets/images/icon.png'),
                   ),
-                  const SizedBox(width: 10), // Jarak antara ikon dan teks
-                  const Text(
+                  SizedBox(width: 10), 
+                  Text(
                     'Filmio',
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
@@ -52,7 +52,7 @@ class HalamanFilm extends StatelessWidget {
               ],
               floating: true,
               snap: true,
-              centerTitle: false, // Nonaktifkan posisi tengah
+              centerTitle: false,
               backgroundColor: Colors.transparent,
               foregroundColor: Colors.white,
             ),

@@ -52,7 +52,7 @@ class ModelFilm {
     });
 
     factory ModelFilm.fromJson(Map<String, dynamic> json) => ModelFilm(
-        backdropPath: json["backdrop_path"] ?? '', // Pastikan tidak null
+        backdropPath: json["backdrop_path"] ?? '', 
         id: json["id"] ?? 0,
         overview: json["overview"] ?? 'No Overview',
         posterPath: json["poster_path"] ?? '',
