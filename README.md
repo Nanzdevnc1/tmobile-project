@@ -6,7 +6,7 @@ Filmio is a Flutter application for browsing and discovering movies. The app fet
 
 ## Preview
 
-![Filmio Preview](assets/images/preview.png)
+![Filmio Preview](assets/preview.png)
 
 ---
 
@@ -61,7 +61,7 @@ To fetch movie data, this project uses the TMDB API. Follow these steps to set u
    ```env
    API_KEY=your_tmdb_api_key
    ```
-4. Update the `api_service.dart` file in the project to use this key.
+4. Update the `lib/widget/constant.dart` file in the project to use this key.
 
 ---
 
@@ -243,7 +243,3 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## License
 This project is licensed under the MIT License.
-
----
-
-Jika ada penyesuaian tambahan, beri tahu saya! 😊
