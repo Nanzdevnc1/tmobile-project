@@ -38,5 +38,5 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/images/filmio_preview.png
+    - assets/preview.png
     
