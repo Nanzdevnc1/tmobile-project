@@ -61,7 +61,7 @@ To fetch movie data, this project uses the TMDB API. Follow these steps to set u
    ```env
    API_KEY=your_tmdb_api_key
    ```
-4. Update the `lib/widget/constant.dart` file in the project to use this key.
+4. Update the `constant.dart` file in the project to use this key.
 
 ---
 
@@ -238,8 +238,3 @@ class Genre {
 
 ## Contributing
 Contributions are welcome! Feel free to open an issue or submit a pull request.
-
----
-
-## License
-This project is licensed under the MIT License.
